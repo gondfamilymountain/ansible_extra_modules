@@ -98,6 +98,7 @@ def main():
     rootConent =  unrender_html(opener,theurl)
     
     final = {}
+    final['virtual_machines']={}
     if 'href' in  rootConent:
          tmpurl1 =  rootConent.split('<a href="')[1].split('">')[0]
          tmpurl1 = srcurl + tmpurl1
@@ -121,14 +122,15 @@ def main():
                                         if 'displayName' in l or 'allocationType' in l:
                                             result.append(l.rsplit('=',1)[1].strip())
                                     if result[1] == '0':
-                                       final[result[0].strip('"')] = 'thick'
+                                       final['virtual_machines'][result[0].strip('"')] = {'disk_type': 'thick'}
                                     elif result[1] == '1':
-                                       final[result[0].strip('"')] = 'flat'
+                                       final['virtual_machines'][result[0].strip('"')] = {'disk_type': 'flat'}
                                     elif result[1] == '2':
-                                       final[result[0].strip('"')] = 'thin'
+                                       final['virtual_machines'][result[0].strip('"')] = {'disk_type': 'thin'}
     module.exit_json(**final)
 # import module snippets
 from ansible.module_utils.basic import *
 if __name__ == '__main__':
     main()
+
 
